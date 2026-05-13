@@ -63,7 +63,7 @@ resource "aws_security_group" "app_server" {
 
 resource "aws_instance" "app_server" {
   ami                    = "ami-0af878be293432b08"
-  instance_type          = "t4g.micro"
+  instance_type          = "c7i-flex.large"
   subnet_id              = module.subnets.public_subnet_id
   vpc_security_group_ids = [aws_security_group.app_server.id]
 
