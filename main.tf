@@ -40,3 +40,34 @@ module "route_tables" {
   private_app_subnet  = module.subnets.private_app_subnet_id
   data_subnet         = module.subnets.data_subnet_id
 }
+# EC2
+resource "aws_security_group" "app_server" {
+  name        = "app-server-sg"
+  description = "Security group for EC2 app server"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "app_server" {
+  ami                    = "ami-0af878be293432b08"
+  instance_type          = "t4g.micro"
+  subnet_id              = module.subnets.public_subnet_id
+  vpc_security_group_ids = [aws_security_group.app_server.id]
+
+  tags = {
+    Name = "AppServerInstance"
+  }
+}
