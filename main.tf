@@ -66,6 +66,7 @@ resource "aws_instance" "app_server" {
   instance_type          = "t3.micro"
   subnet_id              = module.subnets.public_subnet_id[0]
   vpc_security_group_ids = [aws_security_group.app_server.id]
+}
 
   tags = {
     Name = "AppServerInstance"
